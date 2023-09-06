@@ -1,4 +1,5 @@
 from __future__ import annotations
+from enum import Enum
 
 class LinkedList:
 
@@ -113,6 +114,29 @@ class LinkedList:
         if not node: return
         node.value = value
 
+    def sort(self, sort: Sort):
+        curr = self.__head
+        is_sorted = True
+        while True:
+            if not curr.next:
+                if is_sorted:
+                    return
+                else:
+                    curr = self.__head
+                    is_sorted = True
+
+            if curr.value > curr.next.value and sort == Sort.Ascend:
+                stored = curr.value
+                curr.value = curr.next.value
+                curr.next.value = stored
+                is_sorted = False
+            elif curr.value < curr.next.value and sort == Sort.Descend:
+                stored = curr.value
+                curr.value = curr.next.value
+                curr.next.value = stored
+                is_sorted = False
+            curr = curr.next
+
     def tail(self):
         return self.__tail.value if self.__tail else None
 
@@ -128,3 +152,8 @@ class Node:
         if idx == depth: return self
         next = self.next
         return next.get_node(idx, depth+1) if next else None
+
+
+class Sort(Enum):
+    Ascend = 0
+    Descend = 1

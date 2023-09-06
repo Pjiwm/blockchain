@@ -1,12 +1,18 @@
-from linkedlist import LinkedList
+from linkedlist import LinkedList, Sort
 
-list1 = LinkedList()
-list2 = LinkedList()
-for i in range(11):
-    list1.push(i+1)
-    list2.push(i+20)
-print("o:", list1)
-print("o:", list2)
+ll = LinkedList()
 
-list1.extend(list2)
-print(list1)
+ll.push(10)
+ll.push(8)
+ll.push(0)
+ll.push(12)
+ll.push(5)
+ll.push(30)
+ll.push(31)
+ll.push(15)
+print(ll)
+ll.sort(Sort.Ascend)
+print(ll)
+
+ll.sort(Sort.Descend)
+print(ll)
