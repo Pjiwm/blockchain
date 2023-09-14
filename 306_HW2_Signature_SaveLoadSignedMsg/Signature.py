@@ -29,6 +29,7 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 
+# This exercise was made by Thomas Hu (0971623) and Pim Munne (1075601)
 
 def generate_keys():
     private_key = rsa.generate_private_key(
@@ -39,6 +40,7 @@ def generate_keys():
 # TODO 1: Sign a passed message using a given private key
 # Make sure the message is encoded correctly before signing
 # Signing and verifying algorithms must be the same
+
 
 
 def sign(message, private_key):

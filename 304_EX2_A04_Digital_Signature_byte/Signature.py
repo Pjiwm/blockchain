@@ -22,9 +22,6 @@ Notes:
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
 
-# pad = padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                #    algorithm=hashes.SHA256(), label=None)
-
 # TODO 1: Generate first a private key, then a public key. As a result return both values.
 # Make sure you generate the keys in the correct order.
 # Use recommended algorithms values where possible
