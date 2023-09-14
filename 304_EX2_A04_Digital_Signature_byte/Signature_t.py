@@ -5,7 +5,7 @@ This test case will verify if the provided solution by a student for Signature.p
 from Signature import *
 
 if __name__ == '__main__':
-    
+
     # Generate asymmetric keys for two users
     alex_prv, alex_pbc = generate_keys()
     mike_prv, mike_pbc = generate_keys()
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # Verification of a signature using public key:
     # If Alex sign it:
     alex_signature = sign(alex_message, alex_prv)
-    
+
     verified = verify(alex_message, alex_signature, alex_pbc)
     if verified:
         print('Success: Valid signature is verified.')
@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
     # If Mike sign it:
     f_signature = sign(alex_message, mike_prv)
-    
+
     verified = verify(alex_message, f_signature, alex_pbc)
     if verified:
         print('Fail: Invalid signature is verified.')
