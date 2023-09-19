@@ -24,7 +24,6 @@ Notes:
 """
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
-import binascii
 
 class CBlock:
 
@@ -32,28 +31,26 @@ class CBlock:
     # Make sure you distinguish between the genesis block and other blocks
     def __init__(self, data, previousBlock):
         self.data = data
-        self.previousBlock = previousBlock
-        if previousBlock is not None:
-            self.previousHash = previousBlock.computeHash()
-        else:
-            self.previousHash = None
+        self.hash = None
         self.nonce = 0
-        hasher = hashes.Hash(hashes.SHA256(), backend=default_backend())
-        hasher.update(data.encode())
-        self.hash = hasher.finalize()
+        self.previous_block = previousBlock
+        self.previous_hash = previousBlock.computeHash() if previousBlock else None
+
+    def __bytes__(self):
+        block_bytes = bytearray()
+        block_bytes.extend(bytes(self.data, 'utf-8'))
+        previous_hash_bytes = bytes(str(self.previous_hash), 'utf-8') if self.previous_hash else b''
+        block_bytes.extend(previous_hash_bytes)
+        block_bytes.extend(bytes(str(self.nonce), 'utf-8'))
+        return bytes(block_bytes)
 
     # TODO 2: Compute the cryptographic hash of the current block.
     # Be sure which values must be considered to compute the hash properly.
     # return the digest value
     def computeHash(self):
-        data_bytes = self.data.encode()
-        previous_hash_bytes = bytes(str(self.previousHash), 'utf-8') if self.previousHash else b''
-        nonce_bytes = bytes(str(self.nonce), 'utf-8')
         digest = hashes.Hash(hashes.SHA256(), backend=default_backend())
-        digest.update(data_bytes)
-        digest.update(previous_hash_bytes)
-        digest.update(nonce_bytes)
-        return digest.finalize()
+        digest.update(bytes(self))
+        return digest.finalize().hex()
 
     # TODO 3: Mine the current value of a block
     # Calculates a digest based on required values from the block, such as:
@@ -61,14 +58,15 @@ class CBlock:
     # Make sure to compute the hash value of the current block and store it properly
     def mine(self, leading_zeros):
         self.nonce = 0
-        if self.previousBlock:
-            self.previousHash = self.previousBlock.hash
-        leading_zeros_str = '0' * leading_zeros
+        if self.previous_block:
+            self.previous_hash = self.previous_block.hash
+
         self.hash = self.computeHash()
-        while binascii.hexlify(self.hash).decode()[:leading_zeros] != leading_zeros_str:
+        while self.hash[:leading_zeros] != '0' * leading_zeros:
             self.nonce += 1
             self.hash = self.computeHash()
         print(self.nonce)
+
     # TODO 4: Check if the current block contains valid hash digest values
     # Make sure to distinguish between the genesis block and other blocks
     # Make sure to compare both hash digest values:
@@ -76,8 +74,8 @@ class CBlock:
     # The stored digest of the previous block
     # return the result of all comparisons as a boolean value
     def is_valid_hash(self):
-        if self.previousBlock is None:
+        if not self.previous_block:
             return self.hash == self.computeHash()
         else:
-            previous_hash = self.previousBlock.computeHash()
-            return self.previousHash == previous_hash and self.hash == self.computeHash()
+            previous_hash = self.previous_block.computeHash()
+            return self.previous_hash == previous_hash and self.hash == self.computeHash()
