@@ -58,9 +58,7 @@ class CBlock:
     # Make sure to compute the hash value of the current block and store it properly
     def mine(self, leading_zeros):
         self.nonce = 0
-        if self.previous_block:
-            self.previous_hash = self.previous_block.hash
-
+        self.previous_hash = self.previous_block.hash if self.previous_block else None
         self.hash = self.computeHash()
         while self.hash[:leading_zeros] != '0' * leading_zeros:
             self.nonce += 1
@@ -74,8 +72,8 @@ class CBlock:
     # The stored digest of the previous block
     # return the result of all comparisons as a boolean value
     def is_valid_hash(self):
-        if not self.previous_block:
+        if not self.previous_block: # Genesis block
             return self.hash == self.computeHash()
-        else:
+        else: # Other blocks
             previous_hash = self.previous_block.computeHash()
             return self.previous_hash == previous_hash and self.hash == self.computeHash()
