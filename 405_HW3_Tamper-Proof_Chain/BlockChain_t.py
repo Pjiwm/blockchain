@@ -47,7 +47,7 @@ if __name__ == '__main__':
 
     # Temper the value of a blok
     data3t = 'It is B3t'
-    B3.data = data3t
+    B2.data = data3t
 
     print('\n--- Block3 is tampered --- Hashes and Nonces of blocks after B3 should not match!')
     # Check if tempering of block B3 can be detected.

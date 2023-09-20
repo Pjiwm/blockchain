@@ -75,5 +75,5 @@ class CBlock:
         if not self.previous_block: # Genesis block
             return self.hash == self.computeHash()
         else: # Other blocks
-            previous_hash = self.previous_block.computeHash()
-            return self.previous_hash == previous_hash and self.hash == self.computeHash()
+            self.previous_hash = self.previous_block.computeHash()
+            return self.hash == self.computeHash()
