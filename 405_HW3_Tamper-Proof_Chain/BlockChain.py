@@ -63,7 +63,8 @@ class CBlock:
         while self.hash[:leading_zeros] != '0' * leading_zeros:
             self.nonce += 1
             self.hash = self.computeHash()
-        print(self.nonce)
+        print('nonce:', self.nonce)
+        print('hash:', self.hash)
 
     # TODO 4: Check if the current block contains valid hash digest values
     # Make sure to distinguish between the genesis block and other blocks
